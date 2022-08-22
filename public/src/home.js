@@ -1,10 +1,7 @@
-function getTotalBooksCount(books) {
-  return books.length;
-}
+const getTotalBooksCount = (books) => books.length;
 
-function getTotalAccountsCount(accounts) {
-  return accounts.length;
-}
+const getTotalAccountsCount = (accounts) => accounts.length;
+
 
 function getBooksBorrowedCount(books) {
   let result = books.filter((book)=> book.borrows[0].returned === false)
@@ -33,12 +30,20 @@ function getMostCommonGenres(books) {
  
 
 function getMostPopularBooks(books) {
-  return books
-  .map((book)=> {
-    return { name: book.title, count: book.borrows.length};
-  })
-  .sort((a, b)=> a.count > b.count ? -1 : 1)
-  .slice(0,5);
+  let popularBooks = [];
+  const borrows = books.reduce((acc, book) => {
+    popularBooks.push({name: book.title, count: book.borrows.length });
+  }, []);
+  return fivePopular(popularBooks);
+}
+
+function fivePopular(list) {
+  let popularBooks = list
+  
+  .sort((count1, count2) => (count1.count < count2.count ? 1 : -1))
+  .slice(0, 5);
+  
+  return popularBooks;
 }
 
 function getMostPopularAuthors(books, authors) {
